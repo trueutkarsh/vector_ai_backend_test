@@ -1,0 +1,19 @@
+{
+    "name": "vector.ai.svc",
+    "language": "python3.8",
+    "database": {
+        "name": "vector",
+        "port": 5090,
+        "host": "127.0.0.1",
+        "password": "",
+        "database": "vector"
+    },
+    "kafka": {
+        "producer": {
+            "topic": "Add later"
+        },
+        "consumer": {
+            "topic": "Add later"
+        }
+    }
+}
