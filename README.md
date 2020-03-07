@@ -5,9 +5,9 @@ Problem statement can be found in the repository itself
 ## Tasks
 ### Writer
 #### Database Layer
-* Database schema design
-* DB SQL write ups
-* Database layer accessor module
+* ~~Database schema design~~
+* ~~DB SQL write ups~~
+* ~~Database layer accessor module~~
 * Database input validation module
 * Add more validation logic to check state of db remains consisitent with successful operations, otherwise fail the operations
 #### Service Layer

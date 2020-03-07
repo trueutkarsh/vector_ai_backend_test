@@ -7,14 +7,17 @@
         *   CONTINENT
             *   name (P.K)
             *   population
+            *   area
         *   COUNTRY
             *   name(P.K)
             *   population
+            *   area
             *   num_hospitals
             *   num_rivers
             *   num_schools
         *   CITY
             *   name(P.K)
+            *   population
             *   area
             *   num_roads
             *   num_trees
