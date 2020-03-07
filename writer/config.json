@@ -2,7 +2,7 @@
     "name": "vector.ai.svc",
     "language": "python3.8",
     "database": {
-        "name": "vector",
+        "user": "trueutkarsh",
         "port": 5090,
         "host": "127.0.0.1",
         "password": "",
