@@ -48,6 +48,10 @@ class Validator(object):
         return self._cache["schools"].get(f"aggregate{parent}", 0.0) + schools\
             < self._cache["schools"].get(parent, 0.0)
 
+    def update_cache(self, field, name, value, is_leaf=False):
+        self._cache[field][name] = value
+        if not is_leaf:
+            self._cache[field][f"aggreagate{name}"] = self._cache[field].get(f"aggregate{name}", 0) + value
 
     def _reset_cache(self):
         self._cache = {
