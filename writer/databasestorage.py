@@ -31,6 +31,9 @@ class DatabaseStorage(object):
         self._db_config = config
         self._cursor = self._get_cursor()
 
+    def __del__(self):
+        self._conn.close()
+
     def _get_cursor(self):
         self._conn = psycopg2.connect(**self._db_config)
         self._conn.autocommit = True
@@ -134,3 +137,114 @@ class DatabaseStorage(object):
                 Unsuccessful insert values ({country_name}, {continent_name}) 
                 """
             )
+    
+    def get_population(self):
+        """
+        Get all population data for country and continent
+        """
+        self._cursor.execute(
+            """
+            SELECT name, population FROM continent
+            UNION
+            SELECT name, population FROM country
+            """
+        )
+        return self._cursor.fetchall()
+
+    def get_area(self):
+        """
+        Get all area data for country and continent
+        """
+        self._cursor.execute(
+            """
+            SELECT name, area FROM continent
+            UNION
+            SELECT name, area FROM country
+            """
+        )
+        return self._cursor.fetchall()
+        
+    def get_num_schools(self):
+        """
+        Get all num_schools data for country and continent
+        """
+        self._cursor.execute(
+            """
+            SELECT name, num_schools FROM country
+            """
+        )
+        return self._cursor.fetchall()
+        
+
+    def get_population_aggregate(self):
+        """
+        Get all population aggregate for city and country 
+        w.r.t to country and and continent repectively
+        """
+
+        self._cursor.execute(
+            """
+            SELECT country_name, sum(population)
+            FROM
+            city C JOIN city_country CC 
+            ON
+            C.name = CC.city_name
+            GROUP BY
+            country_name
+            UNION
+            SELECT continent_name, sum(population)
+            FROM
+            country C JOIN country_continent CC 
+            ON
+            C.name = CC.country_name
+            GROUP BY
+            continent_name
+            """
+        )
+        return self._cursor.fetchall()
+
+    def get_area_aggregate(self):
+        """
+        Get all area aggregate for city and country 
+        w.r.t to country and and continent repectively
+        """
+
+        self._cursor.execute(
+            """
+            SELECT country_name, sum(area)
+            FROM
+            city C JOIN city_country CC 
+            ON
+            C.name = CC.city_name
+            GROUP BY
+            country_name
+            UNION
+            SELECT continent_name, sum(area)
+            FROM
+            country C JOIN country_continent CC 
+            ON
+            C.name = CC.country_name
+            GROUP BY
+            continent_name
+            """
+        )
+        return self._cursor.fetchall()
+
+    def get_num_schools_aggregate(self):
+        """
+        Get all num_schools aggregate for city and country 
+        w.r.t to country and and continent repectively
+        """
+
+        self._cursor.execute(
+            """
+            SELECT country_name, sum(num_schools)
+            FROM
+            city C JOIN city_country CC 
+            ON
+            C.name = CC.city_name
+            GROUP BY
+            country_name
+            """
+        )
+        return self._cursor.fetchall()
