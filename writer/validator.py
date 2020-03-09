@@ -27,8 +27,8 @@ Data types in DB tables, Validation to be performed
 
 """
 
-class Validator(object):
 
+class Validator(object):
     def __init__(self, db):
         self._db = db
         self._reset_cache()
@@ -37,21 +37,26 @@ class Validator(object):
         return isinstance(name, str) and name.isalpha()
 
     def validate_population(self, population, parent):
-        return self._cache["population"].get(f"aggregate{parent}", 0) + population\
-            < self._cache["population"].get(parent, 0)
+        return self._cache["population"].get(
+            f"aggregate{parent}", 0
+        ) + population < self._cache["population"].get(parent, 0)
 
     def validate_area(self, area, parent):
-        return self._cache["area"].get(f"aggregate{parent}", 0.0) + area\
-            < self._cache["area"].get(parent, 0.0)
+        return self._cache["area"].get(f"aggregate{parent}", 0.0) + area < self._cache[
+            "area"
+        ].get(parent, 0.0)
 
     def validate_schools(self, schools, parent):
-        return self._cache["schools"].get(f"aggregate{parent}", 0.0) + schools\
-            < self._cache["schools"].get(parent, 0.0)
+        return self._cache["schools"].get(
+            f"aggregate{parent}", 0.0
+        ) + schools < self._cache["schools"].get(parent, 0.0)
 
     def update_cache(self, field, name, value, is_leaf=False):
         self._cache[field][name] = value
         if not is_leaf:
-            self._cache[field][f"aggreagate{name}"] = self._cache[field].get(f"aggregate{name}", 0) + value
+            self._cache[field][f"aggreagate{name}"] = (
+                self._cache[field].get(f"aggregate{name}", 0) + value
+            )
 
     def _reset_cache(self):
         self._cache = {
@@ -65,8 +70,7 @@ class Validator(object):
         self._fill_cache(self._db.get_area_aggregate(), "area", "aggregate")
         self._fill_cache(self._db.get_num_schools(), "schools")
         self._fill_cache(self._db.get_num_schools_aggregate(), "schools", "aggregate")
-    
+
     def _fill_cache(self, rows, key, prefix=""):
         for row in rows:
-            self._cache[key][prefix+row[0]] = row[1]
-
+            self._cache[key][prefix + row[0]] = row[1]

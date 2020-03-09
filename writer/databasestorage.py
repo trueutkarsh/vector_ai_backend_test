@@ -65,10 +65,14 @@ class DatabaseStorage(object):
             (name, population, area),
         )
         if self._cursor.rowcount != 1:
-            raise Exception(f"Unsuccessful insert values ({name}, {population}, {area})")
-    
+            raise Exception(
+                f"Unsuccessful insert values ({name}, {population}, {area})"
+            )
+
     @catch_error
-    def add_country(self, name, population, area, num_hospitals, num_rivers, num_schools):
+    def add_country(
+        self, name, population, area, num_hospitals, num_rivers, num_schools
+    ):
         self._cursor.execute(
             """
             INSERT INTO country (name, population, area, num_hospitals, num_rivers, num_schools)
@@ -84,8 +88,11 @@ class DatabaseStorage(object):
                 ({name}, {population}, {num_hospitals}, {num_rivers}, {num_schools}) 
                 """
             )
+
     @catch_error
-    def add_city(self, name, population, area, num_roads, num_trees, num_shops, num_schools):
+    def add_city(
+        self, name, population, area, num_roads, num_trees, num_shops, num_schools
+    ):
         self._cursor.execute(
             """
             INSERT INTO city (name, population, area, num_roads, num_trees, num_shops, num_schools)
@@ -101,7 +108,7 @@ class DatabaseStorage(object):
                 ({name}, {population}, {area}, {num_roads}, {num_trees}, {num_shops}, {num_schools}) 
                 """
             )
-    
+
     @catch_error
     def add_city_country_relation(self, city_name, country_name):
 
@@ -111,7 +118,7 @@ class DatabaseStorage(object):
             VALUES
             (%s, %s)
             """,
-            (city_name, country_name)
+            (city_name, country_name),
         )
         if self._cursor.rowcount != 1:
             raise Exception(
@@ -129,7 +136,7 @@ class DatabaseStorage(object):
             VALUES
             (%s, %s)
             """,
-            (country_name, continent_name)
+            (country_name, continent_name),
         )
         if self._cursor.rowcount != 1:
             raise Exception(
@@ -137,7 +144,7 @@ class DatabaseStorage(object):
                 Unsuccessful insert values ({country_name}, {continent_name}) 
                 """
             )
-    
+
     def get_population(self):
         """
         Get all population data for country and continent
@@ -163,7 +170,7 @@ class DatabaseStorage(object):
             """
         )
         return self._cursor.fetchall()
-        
+
     def get_num_schools(self):
         """
         Get all num_schools data for country and continent
@@ -174,7 +181,6 @@ class DatabaseStorage(object):
             """
         )
         return self._cursor.fetchall()
-        
 
     def get_population_aggregate(self):
         """

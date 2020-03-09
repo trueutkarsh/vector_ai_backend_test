@@ -1,13 +1,6 @@
 {
-    "name": "vector.ai.writer.svc",
+    "name": "vector.ai.client.svc",
     "language": "python3.8",
-    "database": {
-        "user": "trueutkarsh",
-        "port": 5090,
-        "host": "127.0.0.1",
-        "password": "",
-        "database": "vector"
-    },
     "kafka": {
         "consumer": {
             "config": {
@@ -15,14 +8,14 @@
                 "group.id": "vector",
                 "auto.offset.reset": "smallest"
             },
-            "topic_prefix": "kf.vector.ai.requests"
+            "topic_prefix": "kf.vector.ai.responses"
         },
         "producer": {
             "config": {
                 "bootstrap.servers": "localhost:2181",
                 "client.id": "kafka"
             },
-            "topic_prefix": "kf.vector.ai.responses"
+            "topic_prefix": "kf.vector.ai.requests"
         }
     }
 }
