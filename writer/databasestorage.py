@@ -11,7 +11,9 @@ Create DatabaseStorage class
 """
 import psycopg2
 from psycopg2 import Error
+from misc.logger import get_logger
 
+LOG = get_logger()
 
 def catch_error(func):
     def _wrapper(*args, **kwargs):
@@ -19,8 +21,7 @@ def catch_error(func):
             func(*args, **kwargs)
             return True
         except (Exception, Error) as error:
-            # TODO: Log here
-            print(f"Unsuccessfull opertion {error}")
+            LOG.error(f"Unsuccessfull opertion {error}")
             return False
 
     return _wrapper

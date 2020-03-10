@@ -6,6 +6,9 @@ It should be able publish to a topic and read from another one
 
 from confluent_kafka import Consumer, Producer, KafkaException
 
+from misc.logger import get_logger
+
+LOG = get_logger()
 
 class KafkaConsumerProducer(object):
     def __ini__(self, config, callback, consumer_id=None):
@@ -16,9 +19,9 @@ class KafkaConsumerProducer(object):
         self._callback = callback
 
     def __del__(self):
-        print("Closing consumer")
+        LOG.info("Closing consumer")
         self.close()
-        print("Flushing producer")
+        LOG.info("Flushing producer")
         self._producer.flush()
 
     def start(self, topic_suffix=""):
@@ -35,13 +38,12 @@ class KafkaConsumerProducer(object):
                 if msg.error():
                     raise KafkaException(msg.error())
 
-                print(f"Received message {msg} from kafka.")
+                LOG.info(f"Received message {msg} from kafka.")
 
                 self._callback(msg)
 
         except KafkaException as kferror:
-            # Log here the error message
-            print(f"LOG: Error fetching messages{str(kferror.error())}")
+            LOG.error(f"LOG: Error fetching messages{str(kferror.error())}")
         finally:
             self.close()
 
@@ -55,10 +57,9 @@ class KafkaConsumerProducer(object):
 
         def acked(err, msg):
             if err is not None:
-                # Log here
-                print(f"Failed to write to kafka {str(msg)} due to {str(err)}")
+                LOG.error(f"Failed to write to kafka {str(msg)} due to {str(err)}")
             else:
-                print(f"Message {msg} produced")
+                LOG.info(f"Message {msg} produced")
 
         self._producer.produce(topic, key=key, value=message, callback=acked)
         self._producer.poll(1)
